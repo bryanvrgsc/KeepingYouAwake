@@ -14,10 +14,6 @@
 #import "KYAActivationDurationsMenuController.h"
 #import "KYAActivationUserNotification.h"
 
-// Deprecated!
-#define KYA_MINUTES(m) (m * 60.0f)
-#define KYA_HOURS(h) (h * 3600.0f)
-
 @interface KYAAppController () <KYAStatusItemControllerDataSource, KYAStatusItemControllerDelegate, KYAActivationDurationsMenuControllerDelegate, KYASleepWakeTimerDelegate>
 @property (nonatomic, readwrite) KYASleepWakeTimer *sleepWakeTimer;
 @property (nonatomic, readwrite) KYAStatusItemController *statusItemController;
@@ -384,12 +380,14 @@
     }
     else if(minutes != nil)
     {
-        [self activateTimerWithTimeInterval:(NSTimeInterval)KYA_MINUTES(ceil(minutes.doubleValue))];
+        // Convert minutes to seconds
+        [self activateTimerWithTimeInterval:(NSTimeInterval)(ceil(minutes.doubleValue) * 60.0)];
         statusItemController.appearance = KYAStatusItemAppearanceActive;
     }
     else if(hours != nil)
     {
-        [self activateTimerWithTimeInterval:(NSTimeInterval)KYA_HOURS(ceil(hours.doubleValue))];
+        // Convert hours to seconds
+        [self activateTimerWithTimeInterval:(NSTimeInterval)(ceil(hours.doubleValue) * 3600.0)];
         statusItemController.appearance = KYAStatusItemAppearanceActive;
     }
     else
